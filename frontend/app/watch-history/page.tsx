@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/Header'
+import { API_BASE_URL } from '@/config/api'
 
 interface WatchEntry {
   id: number
@@ -29,7 +30,7 @@ export default function WatchHistory() {
 
   const fetchHistory = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/watchhistory/', {
+      const response = await fetch(`${API_BASE_URL}/api/watchhistory/`, {
         headers: {
           'Authorization': `Token ${token}`,
         },

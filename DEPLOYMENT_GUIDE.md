@@ -1,203 +1,183 @@
-# 🎉 Streaming Platform - READY TO USE
+# 🚀 ZETUMIX - Production Deployment Guide
 
-Your Kenyan Entertainment & Educational Streaming Platform is now **production-ready**!
+## Prerequisites
 
-## ✅ What's Completed
+- Python 3.x installed
+- Node.js 18+ installed
+- Git account
+- Hosting accounts (Render/Railway for backend, Vercel/Netlify for frontend)
 
-### Backend (Django)
-- ✅ All 5 apps fully implemented: users, videos, payments, subscriptions, watchhistory
-- ✅ Complete REST API with authentication (Token-based & Session)
-- ✅ Admin interface configured for all models
-- ✅ Database migrations created and applied (SQLite)
-- ✅ Sample data loaded: Categories, subscription plans, and admin user
-- ✅ CORS configuration for frontend communication
-- ✅ Environment-ready settings
+## Backend Deployment (Django)
 
-### Frontend (Next.js + React + TypeScript)
-- ✅ Homepage with video grid fetching from backend
-- ✅ Complete authentication system (Register/Login)
-- ✅ User dashboard with account management
-- ✅ Subscription management page
-- ✅ Watch history tracking page
-- ✅ Payment history page
-- ✅ Mobile-responsive Tailwind CSS styling
-- ✅ API integration with Django backend
+### 1. Prepare Environment Variables
 
-### Database
-- ✅ SQLite database initialized with schema
-- ✅ Sample categories: Education, Entertainment, Music, Culture
-- ✅ Subscription plans: Free, Weekly, Monthly, Premium
-- ✅ Admin superuser created
-- ✅ All relationships and constraints configured
-
-### DevOps & Configuration
-- ✅ requirements.txt with all dependencies
-- ✅ package.json with all frontend dependencies
-- ✅ Django settings configured
-- ✅ URL routing for all endpoints
-- ✅ Environment-ready configuration
-
----
-
-## 🚀 Quick Start Guide
-
-### Step 1: Start Backend Server
+Create a `.env` file in the project root:
 
 ```bash
-cd "c:\Users\Hp\Desktop\G\Microsoft VS Code\streaming-platform"
-$venv = ".\backend_env\Scripts\python.exe"
-& $venv manage.py runserver
+cp .env.example .env
 ```
 
-Backend runs on: **http://localhost:8000**
-Admin panel: **http://localhost:8000/admin**
+Edit `.env` with your production values:
 
-### Step 2: Start Frontend Development Server
+```env
+SECRET_KEY=your-secure-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=zetumix.com,www.zetumix.com
 
-In a new terminal:
-```bash
-cd "c:\Users\Hp\Desktop\G\Microsoft VS Code\streaming-platform\frontend"
-npm run dev
+# Database (use PostgreSQL for production)
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=zetumix_db
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_HOST=your_db_host
+DB_PORT=5432
+
+# CORS (allow your frontend domain)
+CORS_ALLOWED_ORIGINS=https://zetumix.vercel.app,https://www.zetumix.vercel.app
+CSRF_TRUSTED_ORIGINS=https://zetumix.vercel.app,https://www.zetumix.vercel.app
 ```
 
-Frontend runs on: **http://localhost:3000**
-
----
-
-## 📝 Test Credentials
-
-### Admin Access
-- **Username**: admin
-- **Password**: admin123
-- **URL**: http://localhost:8000/admin
-
-### Test User
-Create your own account at: **http://localhost:3000/auth/register**
-
----
-
-## 🔌 Available API Endpoints
-
-### Authentication
-- `POST /api/users/register/` - Register new user
-- `POST /api/users/login/` - User login (returns token)
-- `GET /api/users/profile/` - Get user profile (requires token)
-
-### Videos
-- `GET /api/videos/` - List all published videos
-- `GET /api/videos/?category=education` - Filter by category
-- `GET /api/videos/<id>/` - Get single video details
-- `GET /api/videos/categories/` - List all categories
-
-### Subscriptions
-- `GET /api/subscriptions/plans/` - List subscription plans
-- `POST /api/subscriptions/subscribe/` - Subscribe to a plan
-- `GET /api/subscriptions/current/` - Get current subscription
-
-### Payments
-- `GET /api/payments/` - View payment history
-- `POST /api/payments/` - Create payment (for backend integration)
-- `POST /api/payments/callback/` - M-Pesa callback handler
-
-### Watch History
-- `GET /api/watchhistory/` - Get user's watch history
-- `POST /api/watchhistory/` - Record watched video
-- `PATCH /api/watchhistory/<id>/` - Update watch progress
-
----
-
-## 📦 Project Structure
-
-```
-streaming-platform/
-├── backend_env/                     # Python virtual environment
-├── frontend/                        # Next.js application
-│   ├── app/
-│   │   ├── page.tsx                # Homepage
-│   │   ├── auth/
-│   │   │   ├── register/page.tsx   # Registration
-│   │   │   └── login/page.tsx      # Login
-│   │   ├── dashboard/page.tsx      # User dashboard
-│   │   ├── subscriptions/page.tsx  # Subscription management
-│   │   ├── payments/page.tsx       # Payment history
-│   │   ├── watch-history/page.tsx  # Watch history
-│   │   └── components/
-│   │       ├── Header.tsx          # Navigation header
-│   │       └── VideoGrid.tsx       # Video display component
-│   └── package.json
-├── users/                          # User authentication app
-│   ├── models.py                   # CustomUser model
-│   ├── views.py                    # Auth views (Register, Login)
-│   ├── serializers.py              # User serializers
-│   ├── admin.py                    # Admin interface
-│   └── urls.py                     # Auth endpoints
-├── videos/                         # Video management app
-│   ├── models.py                   # Video & Category models
-│   ├── views.py                    # Video CRUD views
-│   ├── serializers.py              # Video serializers
-│   ├── admin.py                    # Admin interface
-│   └── urls.py                     # Video endpoints
-├── payments/                       # Payment processing app
-│   ├── models.py                   # Payment model
-│   ├── views.py                    # Payment views
-│   ├── serializers.py              # Payment serializers
-│   ├── admin.py                    # Admin interface
-│   └── urls.py                     # Payment endpoints
-├── subscriptions/                  # Subscription management
-│   ├── models.py                   # Plan & UserSubscription models
-│   ├── views.py                    # Subscription views
-│   ├── serializers.py              # Subscription serializers
-│   ├── admin.py                    # Admin interface
-│   └── urls.py                     # Subscription endpoints
-├── watchhistory/                   # View tracking
-│   ├── models.py                   # WatchHistory model
-│   ├── views.py                    # History views
-│   ├── serializers.py              # History serializers
-│   ├── admin.py                    # Admin interface
-│   └── urls.py                     # History endpoints
-├── db.sqlite3                      # Database file
-├── manage.py                       # Django management
-├── requirements.txt                # Python dependencies
-└── streaming_platform/
-    ├── settings.py                 # Django configuration
-    ├── urls.py                     # Main URL routing
-    ├── asgi.py                     # ASGI config
-    └── wsgi.py                     # WSGI config
-```
-
----
-
-## 🔄 API Authentication
-
-### Getting an Auth Token
+### 2. Install Dependencies
 
 ```bash
-curl -X POST http://localhost:8000/api/users/login/ \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"admin123"}'
+pip install -r requirements.txt
+pip install python-decouple  # For environment variables
+pip install gunicorn         # Production WSGI server
+pip install whitenoise       # Static files serving
+pip install psycopg2-binary  # PostgreSQL driver
 ```
 
-Response:
-```json
-{
-  "token": "abc123def456...",
-  "user": {
-    "id": 1,
-    "username": "admin",
-    "email": "admin@streamingplatform.com",
-    "subscription_status": "free"
-  }
-}
-```
+### 3. Database Setup
 
-### Using Token for API Calls
+For production, use PostgreSQL instead of SQLite:
+
+1. Create a PostgreSQL database
+2. Update `.env` with database credentials
+3. Run migrations:
 
 ```bash
-curl -X GET http://localhost:8000/api/users/profile/ \
-  -H "Authorization: Token abc123def456..."
+python manage.py migrate
 ```
 
+### 4. Collect Static Files
+
+```bash
+python manage.py collectstatic --noinput
+```
+
+### 5. Deploy to Hosting Service
+
+#### Option A: Render (Recommended)
+
+1. Connect your GitHub repository
+2. Set build command: `pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput`
+3. Set start command: `gunicorn streaming_platform.wsgi:application`
+4. Add environment variables from your `.env` file
+5. Deploy
+
+#### Option B: Railway
+
+1. Connect repository
+2. Add environment variables
+3. Railway auto-detects Python and runs migrations
+4. Deploy
+
+#### Option C: Heroku
+
+1. Install Heroku CLI
+2. Create app: `heroku create your-app-name`
+3. Set environment variables: `heroku config:set KEY=VALUE`
+4. Deploy: `git push heroku main`
+
+## Frontend Deployment (Next.js)
+
+### 1. Prepare Environment Variables
+
+```bash
+cd frontend
+cp .env.local.example .env.local
+```
+
+Edit `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=https://your-backend-domain.com
+```
+
+### 2. Build for Production
+
+```bash
+npm run build
+```
+
+### 3. Deploy to Hosting Service
+
+#### Option A: Vercel (Recommended)
+
+1. Install Vercel CLI: `npm i -g vercel`
+2. Deploy: `vercel`
+3. Set environment variable: `NEXT_PUBLIC_API_URL=https://your-backend-domain.com`
+4. Deploy
+
+#### Option B: Netlify
+
+1. Connect repository
+2. Set build command: `npm run build`
+3. Set publish directory: `out` (for static export) or `.next` (for SSR)
+4. Add environment variable: `NEXT_PUBLIC_API_URL=https://your-backend-domain.com`
+5. Deploy
+
+## Post-Deployment Checklist
+
+### Backend
+- [ ] DEBUG=False
+- [ ] SECRET_KEY is secure and unique
+- [ ] ALLOWED_HOSTS includes your domain
+- [ ] CORS_ALLOWED_ORIGINS includes frontend domain
+- [ ] Database is PostgreSQL
+- [ ] Static files are collected
+- [ ] Admin panel accessible at `/admin`
+
+### Frontend
+- [ ] NEXT_PUBLIC_API_URL points to backend
+- [ ] Build succeeds without errors
+- [ ] All pages load correctly
+- [ ] Authentication works
+- [ ] API calls succeed
+
+### Security
+- [ ] HTTPS enabled
+- [ ] SECRET_KEY not committed to git
+- [ ] Database credentials secure
+- [ ] Admin password changed from default
+
+## Troubleshooting
+
+### Backend Issues
+- **500 Error**: Check logs for DEBUG info
+- **CORS Error**: Verify CORS_ALLOWED_ORIGINS
+- **Static Files**: Run `collectstatic`
+
+### Frontend Issues
+- **API Calls Fail**: Check NEXT_PUBLIC_API_URL
+- **Build Fails**: Ensure all dependencies installed
+- **Auth Issues**: Verify token handling
+
+## Domain Configuration
+
+1. Point your domain to the hosting service
+2. Update ALLOWED_HOSTS and CORS settings
+3. Test all functionality
+
+## Monitoring
+
+- Set up error logging (Sentry, etc.)
+- Monitor database performance
+- Set up backups for production database
+
 ---
+
+🎉 Your streaming platform is now live on the internet!
 
 ## 🎯 Next Steps for Development
 

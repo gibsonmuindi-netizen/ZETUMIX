@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/Header'
+import { API_BASE_URL } from '@/config/api'
 
 interface SubscriptionPlan {
   id: number
@@ -32,7 +33,7 @@ export default function Subscriptions() {
 
   const fetchPlans = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/subscriptions/plans/', {
+      const response = await fetch(`${API_BASE_URL}/api/subscriptions/plans/`, {
         headers: {
           'Authorization': `Token ${token}`,
         },
@@ -48,7 +49,7 @@ export default function Subscriptions() {
 
   const handleSubscribe = async (planId: number) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/subscriptions/subscribe/', {
+      const response = await fetch(`${API_BASE_URL}/api/subscriptions/subscribe/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

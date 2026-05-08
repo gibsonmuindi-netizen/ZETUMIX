@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Header } from '@/components/Header'
+import { API_BASE_URL } from '@/config/api'
 
 export default function Login() {
   const router = useRouter()
@@ -31,7 +32,7 @@ export default function Login() {
     setLoading(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
+      const response = await fetch(`${API_BASE_URL}/api/users/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

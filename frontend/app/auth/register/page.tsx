@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Header } from '@/components/Header'
+import { API_BASE_URL } from '@/config/api'
 
 export default function Register() {
   const router = useRouter()
@@ -37,7 +38,7 @@ export default function Register() {
 
     setLoading(true)
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
+      const response = await fetch(`${API_BASE_URL}/api/users/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

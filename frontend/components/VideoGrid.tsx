@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { API_BASE_URL } from '@/config/api'
 
 interface Video {
   id: number
@@ -24,7 +25,7 @@ export function VideoGrid() {
 
   const fetchVideos = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/videos/')
+      const response = await fetch(`${API_BASE_URL}/api/videos/`)
       if (response.ok) {
         const data = await response.json()
         setVideos(data)
@@ -74,7 +75,7 @@ export function VideoGrid() {
           <div className="aspect-video bg-gray-200 relative">
             {video.thumbnail ? (
               <Image
-                src={`http://127.0.0.1:8000${video.thumbnail}`}
+                src={`${API_BASE_URL}${video.thumbnail}`}
                 alt={video.title}
                 fill
                 className="object-cover"
